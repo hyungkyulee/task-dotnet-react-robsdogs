@@ -8,8 +8,8 @@ namespace RobsDogs.Models.Domain
 
         public string OwnerName { get; set; }
 
-        // public List<string> DogNames { get; set; }
         public string DogName { get; set; }
+        // public List<string> DogNames { get; set; } = new List<string>();
 
         // public DogOwner(long id,
         //     string ownerName,

@@ -1,7 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RobsDogs.Models.Api;
+using RobsDogs.Models.Contracts;
 using RobsDogs.Models.Domain;
-using RobsDogs.Services.Repositories;
+using RobsDogs.Repositories;
 
 namespace RobsDogs.Controllers
 {
@@ -9,20 +12,23 @@ namespace RobsDogs.Controllers
     [ApiController]
     public class DogOwnersController : ControllerBase
     {
-        private readonly DogOwnerRepository _memoryDbClient;
+        private readonly IDogOwnerRepository _repository;
 
-        public DogOwnersController(DogOwnerRepository memoryDbClient)
+        public DogOwnersController(IDogOwnerRepository repository)
         {
-            _memoryDbClient = memoryDbClient;
+            _repository = repository;
         }
 
         [HttpPost]
-        public async Task<ActionResult<DogOwner>> AddDogOwner(DogOwner dogOwner)
+        public async Task<ActionResult<DogOwner>> AddDogOwner(AddDogOwnerRequest request)
         {
-            _memoryDbClient.DogOwners.Add(dogOwner);
-            await _memoryDbClient.SaveChangesAsync();
+            var dogOwner = new DogOwner();
+            dogOwner.OwnerName = request.OwnerName;
+            dogOwner.DogName = request.DogName;
 
-            return CreatedAtAction(nameof(GetDogOwner),
+            await _repository.Save(dogOwner);
+            
+            return CreatedAtAction(nameof(AddDogOwner),
                 new {id = dogOwner.Id},
                 dogOwner);
         }
@@ -30,13 +36,14 @@ namespace RobsDogs.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DogOwner>> GetDogOwner(long id)
         {
-            var dogOwner = await _memoryDbClient.DogOwners.FindAsync(id);
-            if (dogOwner == null)
-            {
-                return NotFound();
-            }
-
-            return dogOwner;
+            // var dogOwner = await _repository.DogOwners.FindAsync(id);
+            // if (dogOwner == null)
+            // {
+            //     return NotFound();
+            // }
+            //
+            // return dogOwner;
+            return Ok(new DogOwner());
         }
     }
 }

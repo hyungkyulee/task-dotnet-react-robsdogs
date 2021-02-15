@@ -12,8 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RobsDogs.Models.Contracts;
 using RobsDogs.Models.Domain;
-using RobsDogs.Services.Repositories;
+using RobsDogs.Repositories;
 
 namespace RobsDogs
 {
@@ -29,8 +30,10 @@ namespace RobsDogs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DogOwnerRepository>(opt =>
+            services.AddDbContext<DogOwnerContext>(opt =>
                 opt.UseInMemoryDatabase("DogOwnerList"));
+            // services.AddSingleton<DogOwnerContext>();
+            services.AddScoped<IDogOwnerRepository, DogOwnerRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "RobsDogs", Version = "v1"}); });
         }

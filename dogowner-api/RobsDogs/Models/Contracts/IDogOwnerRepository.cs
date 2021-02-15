@@ -7,7 +7,7 @@ namespace RobsDogs.Models.Contracts
 {
     public interface IDogOwnerRepository
     {
-        Task<ActionResult<DogOwner>> Save(DogOwner dogOwner);
-        Task<ActionResult<DogOwner>> Get(long id);
+        Task Save(DogOwner dogOwner);
+        Task<DogOwner> Get(long id);
     }
 }
