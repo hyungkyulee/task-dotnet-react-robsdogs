@@ -11,13 +11,20 @@ namespace RobsDogs.Models.Domain
         public string DogName { get; set; }
         // public List<string> DogNames { get; set; } = new List<string>();
 
-        // public DogOwner(long id,
-        //     string ownerName,
-        //     List<string> dogNames)
-        // {
-        //     Id = id;
-        //     OwnerName = ownerName;
-        //     DogNames = dogNames;
-        // }
+        public DogOwner(long id,
+            string ownerName,
+            string dogName)
+        {
+            Id = id;
+            OwnerName = ownerName;
+            DogName = dogName;
+        }
+        
+        public DogOwner(string ownerName,
+            string dogName)
+        {
+            OwnerName = ownerName;
+            DogName = dogName;
+        }
     }
 }

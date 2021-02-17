@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using RobsDogs.Models.Api;
 using RobsDogs.Models.Domain;
 
 namespace RobsDogs.Models.Contracts

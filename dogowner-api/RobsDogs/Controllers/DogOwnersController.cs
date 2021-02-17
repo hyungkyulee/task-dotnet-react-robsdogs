@@ -20,30 +20,33 @@ namespace RobsDogs.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DogOwner>> AddDogOwner(AddDogOwnerRequest request)
+        public async Task<IActionResult> PostDogOwner(DogOwnerRequest request)
         {
-            var dogOwner = new DogOwner();
-            dogOwner.OwnerName = request.OwnerName;
-            dogOwner.DogName = request.DogName;
-
-            await _repository.Save(dogOwner);
+            if (request == null)
+            {
+                return BadRequest();
+            }
             
-            return CreatedAtAction(nameof(AddDogOwner),
-                new {id = dogOwner.Id},
-                dogOwner);
+            var dogOwner = new DogOwner( request.OwnerName, request.DogName);
+            await _repository.Save(dogOwner);
+
+            return CreatedAtAction(nameof(PostDogOwner), new {id = dogOwner.Id}, null);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DogOwner>> GetDogOwner(long id)
+        public async Task<IActionResult> GetDogOwner(long id)
         {
-            // var dogOwner = await _repository.DogOwners.FindAsync(id);
-            // if (dogOwner == null)
-            // {
-            //     return NotFound();
-            // }
-            //
-            // return dogOwner;
-            return Ok(new DogOwner());
+            var dogOwner = await _repository.Get(id);
+            if (dogOwner == null)
+            {
+                return NotFound();
+            }
+            
+            var response = new DogOwnerResponse(dogOwner.Id,
+                dogOwner.OwnerName,
+                dogOwner.DogName);
+
+            return Ok(response);
         }
     }
 }

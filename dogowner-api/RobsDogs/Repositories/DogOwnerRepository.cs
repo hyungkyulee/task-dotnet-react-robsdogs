@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using RobsDogs.Models.Api;
 using RobsDogs.Models.Contracts;
 using RobsDogs.Models.Domain;
 
